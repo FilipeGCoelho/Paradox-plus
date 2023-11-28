@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shortcut Manager</title>
+    <link
+      href="./bootstrap/css/bootstrap.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="./popup.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <div class="col-4">
+            <a class="navbar-brand" href="#">Shortcut Manager</a>
+          </div>
+          <div class="col-md-6 offset-md-0">
+            <select class="form-select" aria-label="Add a shortcut">
+              <option selected>Activate a shortcut</option>
+            </select>
+          </div>
+        </div>
+      </nav>
+      <div id="activeShortcuts" class="active-shortcuts">
+        <div class="accordion" id="active-shortcuts-accordeon"></div>
+      </div>
+    </div>
+    <script src="./popup.js"></script>
+    <script src="./bootstrap/js/bootstrap.bundle.js"></script>
+  </body>
+</html>

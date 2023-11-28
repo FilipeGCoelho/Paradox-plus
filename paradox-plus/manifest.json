@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Paradox Plus",
+  "version": "0.0.1",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "description": "A enhancement tool for Paradox's ATS website",
+  "icons": {
+    "16": "resources/icon.png",
+    "32": "resources/icon.png",
+    "48": "resources/icon.png",
+    "128": "resources/icon.png"
+  },
+  "permissions": ["storage", "webRequest", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://olivia.paradox.ai/*", "https://stg.paradox.ai/*"],
+      "css": ["css/content.css"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "elements/button.html",
+        "elements/*",
+        "config/*",
+        "resources/*",
+        "bootstrap/css/*",
+        "bootstrap/js/*"
+      ],
+      "matches": ["https://olivia.paradox.ai/*", "https://stg.paradox.ai/*"]
+    }
+  ]
+}

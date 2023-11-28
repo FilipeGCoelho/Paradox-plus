@@ -1,0 +1,192 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background: #f7f7f7;
+}
+
+.app-container {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: #5b5f97;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-input {
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 2px solid #ddd;
+  width: 60%;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.shortcuts-section {
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.active-shortcuts {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.shortcut-container:not(.expanded) .shortcut-details {
+  display: none;
+}
+
+/* When the container is expanded, the details are shown */
+.shortcut-container.expanded .shortcut-details {
+  display: block;
+}
+
+/* Hide the input fields by default */
+.shortcut-container .shortcut-input {
+  display: none;
+}
+
+/* Show the input fields when container is expanded */
+.shortcut-container.expanded .shortcut-input {
+  display: inline-block;
+}
+
+.shortcut-container {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.shortcut-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.shortcut-name {
+  font-weight: bold;
+  display: inline-block;
+  position: relative; /* For the absolute positioning of the pseudo-element */
+  cursor: pointer; /* Indicates it's clickable */
+}
+
+.shortcut-name::before {
+  content: "▼";
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.shortcut-expanded .shortcut-name::before {
+  transform: rotate(180deg);
+}
+
+.shortcut-delete {
+  background-color: #ff647c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 5px 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.shortcut-delete:hover {
+  background-color: #e63946;
+}
+
+.shortcut-details {
+  display: none; /* Start with details hidden */
+  padding: 10px;
+}
+
+.shortcut-expanded .shortcut-details {
+  display: block; /* Show details when container is expanded */
+}
+
+.shortcut-input {
+  width: calc(100% - 22px);
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+h2 {
+  color: #333;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.dropdown {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: absolute;
+  top: 100%;
+  width: 60%;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown div {
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown div:last-child {
+  border-bottom: none;
+}
+
+.dropdown div:hover {
+  background-color: #f0f0f0;
+}
+
+.shortcut-details {
+  display: none; /* Hidden by default */
+  /* styles for padding, margins, etc. */
+}
+
+.show .shortcut-details {
+  display: block; /* Shown when the container is expanded */
+}
+
+/* Styling for arrow indicators */
+.shortcut-name:before {
+  content: "▼ ";
+  /* Additional styling for the arrow, if necessary */
+}
+
+.show .shortcut-name:before {
+  content: "▲ ";
+}
+
+body {
+  min-width: 500px;
+  min-height: 800px;
+}

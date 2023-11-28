@@ -1,0 +1,91 @@
+{
+  "type": "container",
+  "name": "container",
+  "content": "elements/shortcutContainer.html",
+  "parent": {
+    "selector": "body.ol-cem",
+    "injectLocation": "afterbegin"
+  },
+  "children": [
+    {
+      "type": "section",
+      "name": "Administration",
+      "content": "elements/shortcutSection.html",
+      "toReplace": [
+        {
+          "from": "{{Section Id}}",
+          "to": "Administration"
+        },
+        {
+          "from": "{{Section Name}}",
+          "to": "Administration"
+        }
+      ],
+      "parent": {
+        "selector": "div#paradox-plus-shortcut-section",
+        "injectLocation": "beforeend"
+      },
+      "children": [
+        {
+          "type": "shortcut",
+          "name": "Admins",
+          "content": "elements/shortcut.html",
+          "parent": {
+            "selector": "section#paradox-plus-shortcut-section-Administration div.menu-content",
+            "injectLocation": "beforeend"
+          },
+          "toReplace": [
+            {
+              "from": "{{PATH}}",
+              "to": "/admin/admin-users"
+            },
+            {
+              "from": "{{SHORTCUT_NAME}}",
+              "to": "Admins"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "name": "general",
+      "content": "elements/shortcutSection.html",
+      "toReplace": [
+        {
+          "from": "{{Section Id}}",
+          "to": "general"
+        },
+        {
+          "from": "{{Section Name}}",
+          "to": "general"
+        }
+      ],
+      "parent": {
+        "selector": "div#paradox-plus-shortcut-section",
+        "injectLocation": "beforeend"
+      },
+      "children": [
+        {
+          "type": "shortcut",
+          "name": "/jobs",
+          "content": "elements/shortcut.html",
+          "parent": {
+            "selector": "section#paradox-plus-shortcut-section-general div.menu-content",
+            "injectLocation": "beforeend"
+          },
+          "toReplace": [
+            {
+              "from": "{{PATH}}",
+              "to": "/jobs"
+            },
+            {
+              "from": "{{SHORTCUT_NAME}}",
+              "to": "/jobs"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
