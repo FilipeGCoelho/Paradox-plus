@@ -1,92 +1,102 @@
-/candidates/all-candidates
-/campaigns
-/campus-page
-/analytics
-/jobs
-/integration-center-v2
-/integration-center-v2?type=2
-/integration-center-v2?type=3
-/integration-center-v2?type=4
-/integration-center-v2?type=6
-/integration-center-v2?type=7
-/integration-center-v2?type=8
-/integration-center-v2?type=10
-/integration-center-v2?type=11
-/admin/
-/admin/report/
-/admin/report/external/
-/admin/report/candidates/
-/admin/report/campaigns/
-/admin/analytics
-/admin/shorten
-/admin/ongoing-training
-/admin/sso-claims
-/admin/admin-users
-/admin/digital-consent
-/admin/ai-phone-numbers
-/admin/whatsapp-templates/all
-/admin/whatsapp-numbers
-/admin/settings
-/admin/versions
-/cms
-/settings/
-/settings/journeys
-/settings/conversations
-/settings/workflows
-/settings/approvals-builder
-/settings/school-management
-/settings/location-management/
-/settings/assistant-messaging
-/settings/candidate-summary-builder
-/settings/phone-numbers
-/settings/source-tracking
-/settings/suggestions
-/settings/web-management-v2
-/settings/alert-management
-/settings/security
-/settings/round-robin-management
-/settings/group-management
-/settings/employee-roles/
-/settings/employee-roles/all-active-employees
-/settings/employee-roles/roles-and-perm
-/settings/forms
-/settings/forms/all?type=1
-/settings/forms/all?type=2
-/settings/offers/all-offers
-/settings/system-attributes-v2
-/settings/system-attributes-v2?type=1&category=1
-/settings/system-attributes-v2?type=9&category=1
-/settings/company-information/
-/settings/company-information/details
-/settings/company-information/brand-management
-/settings/data-feeds
-/settings/data-feeds?type=3&page=location
-/settings/data-feeds?type=1&page=employee
-/settings/applicant-flows/
-/settings/applicant-flows/all
-/settings/applicant-flows/active
-/settings/applicant-flows/drafts
-/settings/applicant-flows/inactive
-/settings/assistant-reminders/
-/settings/assistant-reminders/candidate
-/settings/assistant-reminders/employee
-/settings/ai-customization
-/settings/sales-demo
-/settings/client-setup-v2
-/settings/client-setup-v2?setup_type=account_overview
-/settings/client-setup-v2?setup_type=campus
-/settings/client-setup-v2?setup_type=campaign
-/settings/client-setup-v2?setup_type=capture
-/settings/client-setup-v2?setup_type=care
-/settings/client-setup-v2?setup_type=compliance_security
-/settings/client-setup-v2?setup_type=dashboards
-/settings/client-setup-v2?setup_type=employee_referral
-/settings/client-setup-v2?setup_type=event
-/settings/client-setup-v2?setup_type=hire
-/settings/client-setup-v2?setup_type=candidate_journey
-/settings/client-setup-v2?setup_type=job_search
-/settings/client-setup-v2?setup_type=multilingual
-/settings/client-setup-v2?setup_type=scheduling
-/settings/client-setup-v2?setup_type=talent_community
-/settings/client-setup-v2?setup_type=more
-/settings/client-setup-v2?setup_type=ats_integration
+/candidates/all-candidates,inbox
+/campaigns,Campaigns
+/campus-page,Campus
+/analytics,Analystics
+/jobs,Jobs
+/integration-center-v2,Integration Center
+/integration-center-v2?type=2,Out Requests
+/integration-center-v2?type=3,In Requests
+/integration-center-v2?type=4,Auth Requests
+/integration-center-v2?type=6,Logs - Out Requests
+/integration-center-v2?type=7,Logs - In Requests
+/integration-center-v2?type=8,Logs - Auth Requests
+/integration-center-v2?type=10,Mapped Values
+/integration-center-v2?type=11,Authorizations
+/admin/,Admin
+/admin/report/,Reports
+/admin/report/external/,Reports - External
+/admin/report/candidates/,Reports - Candidates
+/admin/report/campaigns/,Reports - Campaigns
+/admin/analytics,Analytics
+/admin/shorten,Shorten URL
+/admin/ongoing-training,Ongoing Training
+/admin/sso-claims,SSO Claims
+/admin/admin-users,Admin Users
+/admin/digital-consent,Digital Consent
+/admin/ai-phone-numbers,AI Phone Numbers
+/admin/whatsapp-templates/all,WA Templates
+/admin/whatsapp-numbers,WA Numbers
+/admin/settings,Admin Settings
+/admin/versions,Admin - Versions
+/cms,CMS
+/settings/,Settings
+/settings/journeys,Journeys
+/settings/conversations,Conversations
+/settings/workflows,Workflows
+/settings/approvals-builder,Approvals Builder
+/settings/school-management,School Management
+/settings/location-management/,Location Management
+/settings/assistant-messaging,Assistant Messaging
+/settings/candidate-summary-builder,Summary Builder
+/settings/phone-numbers,Phone numbers
+/settings/source-tracking,Source Tracking
+/settings/suggestions,Suggestions
+/settings/web-management-v2,Web Management
+/settings/alert-management,Alert Management
+/settings/security,Security
+/settings/round-robin-management,Round Robin
+/settings/group-management,Group Management
+/settings/employee-roles/,Roles & Permissions
+/settings/employee-roles/all-active-employees,Roles & Permissions - Active
+/settings/employee-roles/roles-and-perm,Roles & Permissions - Roles
+/settings/forms,Forms
+/settings/forms/all?type=1,Forms - Candidate
+/settings/forms/all?type=2,Forms - Employee
+/settings/offers/all-offers,Offers
+/settings/system-attributes-v2,System Attributes
+/settings/system-attributes-v2?type=1&category=0,Candidate Attributes - All
+/settings/system-attributes-v2?type=1&category=1,Candidate Attributes - Standard
+/settings/system-attributes-v2?type=1&category=2,Candidate Attributes - Custom
+/settings/system-attributes-v2?type=13&category=0,Employee Attributes - All
+/settings/system-attributes-v2?type=13&category=1,Employee Attributes - Standard
+/settings/system-attributes-v2?type=13&category=2,Employee Attributes - Custom
+/settings/system-attributes-v2?type=9&category=0,Location Attributes - All
+/settings/system-attributes-v2?type=9&category=1,Location Attributes - Standard
+/settings/system-attributes-v2?type=9&category=2,Location Attributes - Custom
+/settings/system-attributes-v2?type=5&category=0,Job Attributes - All
+/settings/system-attributes-v2?type=5&category=1,Job Attributes - Standard
+/settings/system-attributes-v2?type=5&category=2,Job Attributes - Custom
+/settings/company-information/,Company Information
+/settings/company-information/details,Company Information - Details
+/settings/company-information/brand-management,Brand Management
+/settings/data-feeds,Data Feeds
+/settings/data-feeds?type=3&page=location,Location Feed
+/settings/data-feeds?type=1&page=employee,User Feed
+/settings/applicant-flows/,Applicant Flows
+/settings/applicant-flows/all,Applicant Flows - All
+/settings/applicant-flows/active,Applicant Flows - Active
+/settings/applicant-flows/drafts,Applicant Flows - Drafts
+/settings/applicant-flows/inactive,Applicant Flows - Inactive
+/settings/assistant-reminders/,Assistant Reminders
+/settings/assistant-reminders/candidate,Assistant Reminders - Candidate
+/settings/assistant-reminders/employee,Assistant Reminders - Employee
+/settings/ai-customization,AI Customization
+/settings/sales-demo,Sales Demo
+/settings/client-setup-v2,Client Setup
+/settings/client-setup-v2?setup_type=account_overview,Client Setup - Overview
+/settings/client-setup-v2?setup_type=campus,Client Setup - Campus
+/settings/client-setup-v2?setup_type=campaign,Client Setup - Campaign
+/settings/client-setup-v2?setup_type=capture,Client Setup - Capture
+/settings/client-setup-v2?setup_type=care,Client Setup - Care
+/settings/client-setup-v2?setup_type=compliance_security,Client Setup - Compliance
+/settings/client-setup-v2?setup_type=dashboards,Client Setup - Dashboards
+/settings/client-setup-v2?setup_type=employee_referral,Client Setup - Employee Referral
+/settings/client-setup-v2?setup_type=event,Client Setup - Event
+/settings/client-setup-v2?setup_type=hire,Client Setup - Hire
+/settings/client-setup-v2?setup_type=candidate_journey,Client Setup - Candidate Journey
+/settings/client-setup-v2?setup_type=job_search,Client Setup - Job Search
+/settings/client-setup-v2?setup_type=multilingual,Client Setup - Multilingual
+/settings/client-setup-v2?setup_type=scheduling,Client Setup - Scheduling
+/settings/client-setup-v2?setup_type=talent_community,Client Setup - Talent Community
+/settings/client-setup-v2?setup_type=more,Client Setup - More
+/settings/client-setup-v2?setup_type=ats_integration,Client Setup - ATS Integration

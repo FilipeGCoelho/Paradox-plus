@@ -3,10 +3,10 @@ function injectShortcutsIntoSelect(processedEndpoints) {
   const selectElement = document.querySelector(".form-select");
 
   // Add shortcuts as options to the select element
-  Object.keys(processedEndpoints).forEach((shortcut) => {
+  processedEndpoints.forEach((endpoint) => {
     const option = document.createElement("option");
-    option.textContent = shortcut;
-    option.value = shortcut;
+    option.textContent = endpoint[1];
+    option.value = endpoint[0];
     selectElement.appendChild(option);
   });
 }
@@ -184,37 +184,28 @@ function loadActiveShortcuts() {
 async function fetchEndpoints() {
   const response = await fetch("resources/active-website-endpoints.csv");
   const data = await response.text();
-  const endpoints = data.split("\n").map((line) => line.trim());
-  return preprocessEndpoints(endpoints);
+  const rows = data.split("\n").map((row) => row.trim());
+  return preprocessEndpoints(rows);
 }
 
 // This function preprocesses endpoints to ensure uniqueness
-function preprocessEndpoints(endpoints) {
-  let processed = {};
-  endpoints.forEach((endpoint) => {
-    let segments = endpoint.split("/").filter(Boolean);
-    let name = segments.pop();
-    let duplicate = Object.values(processed).includes(name);
-
-    if (duplicate) {
-      name = `${segments.pop()} ${name}`;
-    }
-    processed[endpoint] = name;
-  });
-  return processed;
+function preprocessEndpoints(rows) {
+  return rows.map((row) => row.split(","));
 }
 
 function setupSelectFieldListener() {
   const selectElement = document.querySelector(".form-select");
-  selectElement.addEventListener("change", function () {
-    const selectedValue = this.value;
+  selectElement.addEventListener("change", function (event) {
+    const option = event.target.selectedOptions[0];
+    const selectedValue = option.value;
+    const selectedText = option.text;
 
     // Assuming addActiveShortcut function takes the value of the selected option
     if (selectedValue !== "Activate a shortcut") {
       // Assuming "default" is the value of your default option
       addActiveShortcut(selectedValue, {
-        name: selectedValue,
-        section: "general",
+        name: selectedText,
+        section: "General",
       });
 
       // Reset the select field to the default option

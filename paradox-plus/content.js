@@ -243,61 +243,65 @@ async function getLeadIDCompanyID(host, OID) {
 }
 
 function injectLeadId() {
-  const OID = location.search.split("selected=")[1].split("&")[0];
-  const HOST = location.host;
+  if (location?.pathname?.startsWith("/candidates/")) {
+    const OID = location.search.split("selected=")[1].split("&")[0];
+    const HOST = location.host;
 
-  getLeadIDCompanyID(HOST, OID).then((response) => {
-    const idElementToInject = "lead-id";
-    const toInject = document.querySelector(`#${idElementToInject}`);
-    if (toInject) {
-      toInject.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
-    } else {
-      const targetElement = document.querySelector("div#board-profile");
-      if (targetElement) {
-        // Create the new element
-        const newElement = document.createElement("div");
-        newElement.id = "lead-id";
-        newElement.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
-
-        // Insert the new element as the first child of the target
-        if (targetElement.firstChild) {
-          targetElement.insertBefore(newElement, targetElement.firstChild);
-        } else {
-          targetElement.appendChild(newElement);
-        }
+    getLeadIDCompanyID(HOST, OID).then((response) => {
+      const idElementToInject = "lead-id";
+      const toInject = document.querySelector(`#${idElementToInject}`);
+      if (toInject) {
+        toInject.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
       } else {
-        console.log("Target element not found");
+        const targetElement = document.querySelector("div#board-profile");
+        if (targetElement) {
+          // Create the new element
+          const newElement = document.createElement("div");
+          newElement.id = "lead-id";
+          newElement.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
+
+          // Insert the new element as the first child of the target
+          if (targetElement.firstChild) {
+            targetElement.insertBefore(newElement, targetElement.firstChild);
+          } else {
+            targetElement.appendChild(newElement);
+          }
+        } else {
+          console.log("Target element not found");
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 function injectCompanyId() {
-  const OID = location.search.split("selected=")[1].split("&")[0];
-  const HOST = location.host;
+  if (location?.pathname?.startsWith("/candidates/")) {
+    const OID = location.search.split("selected=")[1].split("&")[0];
+    const HOST = location.host;
 
-  getLeadIDCompanyID(HOST, OID).then((response) => {
-    const innerHTML = `<span><span><b>Company ID: </b>${response.companyId}</span></span>`;
-    const toInject = document.querySelector(`div#company-id`);
-    if (toInject) {
-      toInject.innerHTML = innerHTML;
-    } else {
-      const targetElement = document.querySelector(
-        `div[data-testid="header_lbl_company_name"]`
-      );
-      if (targetElement) {
-        // Create the new element
-        const newElement = document.createElement("div");
-        newElement.id = "company-id";
-        newElement.innerHTML = innerHTML;
-
-        // Insert the new element as the first child of the target
-        targetElement.insertAdjacentElement("beforebegin", newElement);
+    getLeadIDCompanyID(HOST, OID).then((response) => {
+      const innerHTML = `<span><span><b>Company ID: </b>${response.companyId}</span></span>`;
+      const toInject = document.querySelector(`div#company-id`);
+      if (toInject) {
+        toInject.innerHTML = innerHTML;
       } else {
-        console.log("Target element not found");
+        const targetElement = document.querySelector(
+          `div[data-testid="header_lbl_company_name"]`
+        );
+        if (targetElement) {
+          // Create the new element
+          const newElement = document.createElement("div");
+          newElement.id = "company-id";
+          newElement.innerHTML = innerHTML;
+
+          // Insert the new element as the first child of the target
+          targetElement.insertAdjacentElement("beforebegin", newElement);
+        } else {
+          console.log("Target element not found");
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 // Function to check for the target element and set up MutationObserver
