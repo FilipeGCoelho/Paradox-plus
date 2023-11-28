@@ -35234,7 +35234,7 @@ body.has-toolbar.has-header #loc-search.sticky,body.has-toolbar.has-header .loc-
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     -ms-grid-columns: 1fr 1fr 1fr;
-    column-gap: 20px;
+    column-gap: 10px;
     row-gap: 16px
 }
 
