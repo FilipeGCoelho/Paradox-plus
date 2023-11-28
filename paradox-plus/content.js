@@ -178,6 +178,14 @@ function setupContainerVisibilityToggle() {
   container.addEventListener("click", toggleShortcutContainer);
 }
 
+function injectScript(file_path, tag) {
+  var node = document.getElementsByTagName(tag)[0];
+  var script = document.createElement("script");
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("src", file_path);
+  node.appendChild(script);
+}
+
 // Initial setup
 injectButton();
 injectShortcutContainer()
@@ -191,3 +199,151 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     assembleAndInjectHTML(jsonStructure).then(setupContainerVisibilityToggle);
   }
 });
+
+async function getLeadIDCompanyID(host, OID) {
+  const url = `https://${host}/api/lead/${OID}?lead_type=all-candidates&support_auto_translation=1&no_perm_raise=0&selected=72036861588764&include_ui_filter=-1&order_type=0&filter_data=&with_candidate_summary_data=1&with_integration_message=1`;
+  const requestData = {
+    method: "GET",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
+      Baggage:
+        "sentry-trace_id=ff83d346ab0e46f89c8de070b721063e,sentry-environment=Stg,sentry-release=app%402.3.2,sentry-public_key=4931187b1d434611ac72872a9547f7c4,sentry-transaction=%2Fcandidates%2F.*,sentry-sample_rate=0.05",
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/json",
+      Pragma: "no-cache",
+      "Sec-CH-UA":
+        '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
+      "Sec-CH-UA-Mobile": "?0",
+      "Sec-CH-UA-Platform": '"macOS"',
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "Sentry-Trace": "ff83d346ab0e46f89c8de070b721063e-b9ad17b891a526f3-0",
+      "X-CSRFToken":
+        "QUyv4xsjIsOllgFluPqVMfKhr7SFbO96PjlGFg5EBCu9nbFoEqGnnTiRdFjx4f81",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    referrer: "https://stg.paradox.ai/candidates/all-candidates",
+    referrerPolicy: "same-origin",
+    mode: "cors",
+    credentials: "include",
+  };
+
+  try {
+    const response = await fetch(url, requestData);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    return { leadId: data.lead.raw_id, companyId: data.company_id };
+  } catch (error) {
+    console.error("Error making the request:", error);
+  }
+}
+
+function injectLeadId() {
+  const OID = location.search.split("selected=")[1].split("&")[0];
+  const HOST = location.host;
+
+  getLeadIDCompanyID(HOST, OID).then((response) => {
+    const idElementToInject = "lead-id";
+    const toInject = document.querySelector(`#${idElementToInject}`);
+    if (toInject) {
+      toInject.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
+    } else {
+      const targetElement = document.querySelector("div#board-profile");
+      if (targetElement) {
+        // Create the new element
+        const newElement = document.createElement("div");
+        newElement.id = "lead-id";
+        newElement.innerHTML = `<b>Lead Id: </b>${response.leadId}`;
+
+        // Insert the new element as the first child of the target
+        if (targetElement.firstChild) {
+          targetElement.insertBefore(newElement, targetElement.firstChild);
+        } else {
+          targetElement.appendChild(newElement);
+        }
+      } else {
+        console.log("Target element not found");
+      }
+    }
+  });
+}
+
+function injectCompanyId() {
+  const OID = location.search.split("selected=")[1].split("&")[0];
+  const HOST = location.host;
+
+  getLeadIDCompanyID(HOST, OID).then((response) => {
+    const innerHTML = `<span><span><b>Company ID: </b>${response.companyId}</span></span>`;
+    const toInject = document.querySelector(`div#company-id`);
+    if (toInject) {
+      toInject.innerHTML = innerHTML;
+    } else {
+      const targetElement = document.querySelector(
+        `div[data-testid="header_lbl_company_name"]`
+      );
+      if (targetElement) {
+        // Create the new element
+        const newElement = document.createElement("div");
+        newElement.id = "company-id";
+        newElement.innerHTML = innerHTML;
+
+        // Insert the new element as the first child of the target
+        targetElement.insertAdjacentElement("beforebegin", newElement);
+      } else {
+        console.log("Target element not found");
+      }
+    }
+  });
+}
+
+// Function to check for the target element and set up MutationObserver
+function checkAndObserveTarget() {
+  const leadTarget = document.querySelector(
+    'strong[data-testid="candidateprofile_lbl_name"]'
+  );
+
+  if (leadTarget) {
+    console.log("LeadTarget element found. Setting up MutationObserver.");
+
+    // Create an observer instance
+    const leadObserver = new MutationObserver(injectLeadId);
+
+    // Observer configuration
+    leadObserver.observe(leadTarget, {
+      characterData: true,
+      subtree: true,
+    });
+
+    // Clear the interval as the target is found and observer is set
+    injectLeadId();
+  }
+
+  const companyTarget = document.querySelector(
+    'div[data-testid="header_lbl_company_name"] span span'
+  );
+
+  if (companyTarget) {
+    console.log("CompanyTarget element found. Setting up MutationObserver.");
+
+    // Create an observer instance
+    const companyObserver = new MutationObserver(injectCompanyId);
+
+    // Observer configuration
+    companyObserver.observe(companyTarget, {
+      characterData: true,
+      subtree: true,
+    });
+
+    // Clear the interval as the target is found and observer is set
+    injectCompanyId();
+  }
+
+  if (leadTarget && companyTarget) clearInterval(checkInterval);
+}
+
+// Set an interval to check for the target element
+const checkInterval = setInterval(checkAndObserveTarget, 1000); // checks every 1000 milliseconds (1 second)
