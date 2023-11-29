@@ -255,6 +255,9 @@ function handleSubmitButton(event) {
 
   // Now call saveShortcutToStorage with the gathered data
   saveShortcutToStorage(path, { name, section });
+
+  const container = document.querySelector(`#${itemId} div.accordion-collapse`);
+  container?.classList.remove("show");
 }
 
 function updateShortcutContainer() {
