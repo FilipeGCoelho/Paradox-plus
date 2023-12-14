@@ -18,11 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://olivia.paradox.ai/*",
-        "https://stg.paradox.ai/*",
-        "https://www.mchire.com/*"
-      ],
+      "matches": ["https://*.paradox.ai/*", "https://www.mchire.com/*"],
       "css": ["css/content.css"],
       "js": ["content.js"]
     }
@@ -37,7 +33,7 @@
         "bootstrap/css/*",
         "bootstrap/js/*"
       ],
-      "matches": ["https://olivia.paradox.ai/*", "https://stg.paradox.ai/*"]
+      "matches": ["https://*.paradox.ai/*"]
     }
   ]
 }
