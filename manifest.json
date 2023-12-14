@@ -13,9 +13,6 @@
     "128": "resources/icon.png"
   },
   "permissions": ["storage", "webRequest", "activeTab", "scripting"],
-  "background": {
-    "service_worker": "background.js"
-  },
   "content_scripts": [
     {
       "matches": ["https://*.paradox.ai/*", "https://www.mchire.com/*"],

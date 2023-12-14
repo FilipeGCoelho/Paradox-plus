@@ -186,20 +186,6 @@ function injectScript(file_path, tag) {
   node.appendChild(script);
 }
 
-// Initial setup
-injectButton();
-injectShortcutContainer()
-  .then(setupContainerVisibilityToggle)
-  .catch((error) => console.error("Injection failed:", error));
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.action === "updateContainer") {
-    document.querySelector("div#paradox-plus-shortcut-container").remove();
-    jsonStructure = createJsonStructure(message.data);
-    assembleAndInjectHTML(jsonStructure).then(setupContainerVisibilityToggle);
-  }
-});
-
 async function getLeadIDCompanyID(host, OID) {
   const url = `https://${host}/api/lead/${OID}?lead_type=all-candidates&support_auto_translation=1&no_perm_raise=0&selected=72036861588764&include_ui_filter=-1&order_type=0&filter_data=&with_candidate_summary_data=1&with_integration_message=1`;
   const requestData = {
@@ -348,6 +334,20 @@ function checkAndObserveTarget() {
 
   if (leadTarget && companyTarget) clearInterval(checkInterval);
 }
+
+// Initial setup
+injectButton();
+injectShortcutContainer()
+  .then(setupContainerVisibilityToggle)
+  .catch((error) => console.error("Injection failed:", error));
+
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.action === "updateContainer") {
+    document.querySelector("div#paradox-plus-shortcut-container").remove();
+    jsonStructure = createJsonStructure(message.data);
+    assembleAndInjectHTML(jsonStructure).then(setupContainerVisibilityToggle);
+  }
+});
 
 // Set an interval to check for the target element
 const checkInterval = setInterval(checkAndObserveTarget, 1000); // checks every 1000 milliseconds (1 second)
