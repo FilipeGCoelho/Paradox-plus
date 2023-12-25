@@ -190,3 +190,7 @@ body {
   min-width: 500px;
   min-height: 800px;
 }
+
+div.active-shortcuts-accordeon-section {
+  padding: 10px;
+}

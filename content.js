@@ -115,13 +115,23 @@ function createJsonStructure(data) {
   };
 
   // Helper function to sanitize section names
-  const sanitizeSection = (section) => section.replaceAll(" ", "-");
+  const sanitizeSection = (section) =>
+    section
+      .replaceAll(" ", "-")
+      .replaceAll("\\", "")
+      .replaceAll("%", "")
+      .replaceAll("?", "")
+      .replaceAll("&", "")
+      .replaceAll("=", "")
+      .replaceAll("_", "")
+      .replaceAll("!", "")
+      .replaceAll("-", "");
 
   // Aggregate shortcuts by section
   let sections = {};
   Object.keys(data.shortcuts).forEach((key) => {
     const shortcut = data.shortcuts[key];
-    const sectionName = shortcut.section;
+    const sectionName = shortcut.encodedSection;
 
     if (!sections[sectionName]) {
       sections[sectionName] = [];
@@ -137,7 +147,7 @@ function createJsonStructure(data) {
       content: "elements/shortcutSection.html",
       toReplace: [
         { from: "{{Section Id}}", to: sanitizeSection(section) },
-        { from: "{{Section Name}}", to: section },
+        { from: "{{Section Name}}", to: decodeURIComponent(section) },
       ],
       parent: {
         selector: "div#paradox-plus-shortcut-section",
@@ -253,14 +263,14 @@ function injectLeadId() {
             targetElement.appendChild(newElement);
           }
         } else {
-          console.log("Target element not found");
+          console.log("Lead Id injection target not found");
         }
       }
     });
   }
 }
 
-function injectCompanyId() {
+function injectCompanyIdAndLeadId() {
   if (location?.pathname?.startsWith("/candidates/")) {
     const OID = location.search.split("selected=")[1].split("&")[0];
     const HOST = location.host;
@@ -283,7 +293,7 @@ function injectCompanyId() {
           // Insert the new element as the first child of the target
           targetElement.insertAdjacentElement("beforebegin", newElement);
         } else {
-          console.log("Target element not found");
+          console.log("Company Id injection target not found");
         }
       }
     });
@@ -320,7 +330,7 @@ function checkAndObserveTarget() {
     console.log("CompanyTarget element found. Setting up MutationObserver.");
 
     // Create an observer instance
-    const companyObserver = new MutationObserver(injectCompanyId);
+    const companyObserver = new MutationObserver(injectCompanyIdAndLeadId);
 
     // Observer configuration
     companyObserver.observe(companyTarget, {
@@ -329,7 +339,7 @@ function checkAndObserveTarget() {
     });
 
     // Clear the interval as the target is found and observer is set
-    injectCompanyId();
+    injectCompanyIdAndLeadId();
   }
 
   if (leadTarget && companyTarget) clearInterval(checkInterval);
