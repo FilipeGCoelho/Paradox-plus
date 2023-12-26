@@ -136,7 +136,10 @@ function createJsonStructure(data) {
     if (!sections[sectionName]) {
       sections[sectionName] = [];
     }
-    sections[sectionName].push({ path: key, name: shortcut.name });
+    sections[sectionName].push({
+      path: key,
+      name: decodeURIComponent(shortcut.encodedName),
+    });
   });
 
   // Create section structures
