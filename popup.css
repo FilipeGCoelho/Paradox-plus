@@ -194,3 +194,7 @@ body {
 div.active-shortcuts-accordeon-section {
   padding: 10px;
 }
+
+.col-12 {
+  padding-bottom: 15px;
+}

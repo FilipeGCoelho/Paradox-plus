@@ -116,16 +116,7 @@ function createJsonStructure(data) {
 
   // Helper function to sanitize section names
   const sanitizeSection = (section) =>
-    section
-      .replaceAll(" ", "-")
-      .replaceAll("\\", "")
-      .replaceAll("%", "")
-      .replaceAll("?", "")
-      .replaceAll("&", "")
-      .replaceAll("=", "")
-      .replaceAll("_", "")
-      .replaceAll("!", "")
-      .replaceAll("-", "");
+    section.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()]/g, "");
 
   // Aggregate shortcuts by section
   let sections = {};
@@ -144,13 +135,15 @@ function createJsonStructure(data) {
 
   // Create section structures
   Object.keys(sections).forEach((section) => {
+    let decodedSection = decodeURIComponent(section);
+    let sanitizedSection = sanitizeSection(decodedSection);
     let sectionStructure = {
       type: "section",
       name: section,
       content: "elements/shortcutSection.html",
       toReplace: [
-        { from: "{{Section Id}}", to: sanitizeSection(section) },
-        { from: "{{Section Name}}", to: decodeURIComponent(section) },
+        { from: "{{Section Id}}", to: sanitizedSection },
+        { from: "{{Section Name}}", to: decodedSection },
       ],
       parent: {
         selector: "div#paradox-plus-shortcut-section",
@@ -166,9 +159,7 @@ function createJsonStructure(data) {
         name: shortcut.name,
         content: "elements/shortcut.html",
         parent: {
-          selector: `section#paradox-plus-shortcut-section-${sanitizeSection(
-            section
-          )} div.menu-content`,
+          selector: `section#paradox-plus-shortcut-section-${sanitizedSection} div.menu-content`,
           injectLocation: "beforeend",
         },
         toReplace: [

@@ -24,15 +24,25 @@ function filterEndpoints(query, processedEndpoints) {
 }
 
 // This function adds an active shortcut and saves it to local storage
-function addActiveShortcut(key, value) {
-  renderActiveShortcut(key, value.encodedName, value.encodedSection); // Render the shortcut immediately
-  saveShortcutToStorage(key, value); // Save the shortcut to storage
+function addActiveShortcut(path, value, isPathDisabled, toBeStored = true) {
+  renderActiveShortcut(
+    path,
+    value.encodedName,
+    value.encodedSection,
+    isPathDisabled
+  ); // Render the shortcut immediately
 
-  // Disable the selected option in the dropdown
-  const selectElement = document.querySelector(".form-select");
-  const optionToDisable = selectElement.querySelector(`option[value="${key}"]`);
-  if (optionToDisable) {
-    optionToDisable.disabled = true;
+  if (toBeStored) {
+    saveShortcutToStorage(path, value); // Save the shortcut to storage
+
+    // Disable the selected option in the dropdown
+    const selectElement = document.querySelector(".form-select");
+    const optionToDisable = selectElement.querySelector(
+      `option[value="${path}"]`
+    );
+    if (optionToDisable) {
+      optionToDisable.disabled = true;
+    }
   }
 }
 
@@ -61,7 +71,12 @@ function deleteShortcut(key) {
   });
 }
 
-function renderActiveShortcut(path, encodedName, encodedSection) {
+function renderActiveShortcut(
+  path,
+  encodedName,
+  encodedSection,
+  isPathDisabled = true
+) {
   const originalPath = path;
   const sanitizedPath = sanitizePath(path);
 
@@ -97,7 +112,7 @@ function renderActiveShortcut(path, encodedName, encodedSection) {
     (ariaDescribedby = `accordion-item-${sanitizedPath}-input-path`),
     (id = null),
     (value = originalPath),
-    (isDisabled = true)
+    (isDisabled = isPathDisabled)
   );
   const sectionInput = createInputField(
     (labelText = "section"),
@@ -157,7 +172,7 @@ function renderActiveShortcut(path, encodedName, encodedSection) {
 }
 
 function sanitizePath(path) {
-  return path.replace(/[\/ ?&=_-]/g, "");
+  return path.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()]/g, "");
 }
 
 function createAccordionItem(sanitizedPath) {
@@ -227,7 +242,7 @@ function createInputField(
   if (ariaDescribedby) input.setAttribute("aria-describedby", ariaDescribedby);
   input.value = value;
   if (id) input.id = id;
-  if (isDisabled) input.disabled = true;
+  input.disabled = isDisabled;
 
   inputGroup.append(span, input);
   return inputGroup;
@@ -272,6 +287,25 @@ function loadActiveShortcuts() {
       );
     });
   });
+}
+
+function setupAddCustomShortcutButton() {
+  const buttonId = "add-custom-shortcut-button";
+  const defaultName = "Custom Name";
+  const defaultSection = "Custom Section";
+  const defaultPath = "/custom-path";
+
+  document.getElementById(buttonId).addEventListener("click", (event) =>
+    addActiveShortcut(
+      defaultPath,
+      {
+        encodedName: defaultName,
+        encodedSection: defaultSection,
+      },
+      (isPathDisabled = false),
+      (toBeStored = false)
+    )
+  );
 }
 
 // This function fetches the endpoints from the CSV file
@@ -385,7 +419,7 @@ function getCorrectShortcutSectionContainer(encodedSection) {
 
 function handleSubmitButton(event) {
   let itemId = event.target.getAttribute("itemId");
-  let path = event.target.getAttribute("path");
+  let originalPath = event.target.getAttribute("path");
 
   const nameInput = document.querySelector(
     `div#${itemId} input[aria-label="name"]`
@@ -393,18 +427,26 @@ function handleSubmitButton(event) {
   const sectionInput = document.querySelector(
     `div#${itemId} input[aria-label="section"]`
   );
+  const pathInput = document.querySelector(
+    `div#${itemId} input[aria-label="Path"]`
+  );
 
   const name = nameInput.value;
   const section = sectionInput.value;
+  const path = pathInput.value;
 
   const container = document.querySelector(`#${itemId} div.accordion-collapse`);
   container?.classList.remove("show");
   container.closest("div.accordion-item").remove();
+
   // Render updated shortcut, and save on the local storage
-  addActiveShortcut(path, {
-    encodedName: encodeURIComponent(name),
-    encodedSection: encodeURIComponent(section),
-  });
+  addActiveShortcut(
+    itemId == "accordion-item-custompath" ? path : originalPath,
+    {
+      encodedName: encodeURIComponent(name),
+      encodedSection: encodeURIComponent(section),
+    }
+  );
 }
 
 function updateShortcutContainer() {
@@ -437,4 +479,5 @@ document.addEventListener("DOMContentLoaded", async function () {
   injectShortcutsIntoSelect(processedEndpoints);
   setupSelectFieldListener();
   loadActiveShortcuts();
+  setupAddCustomShortcutButton();
 });
