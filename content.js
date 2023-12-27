@@ -116,7 +116,7 @@ function createJsonStructure(data) {
 
   // Helper function to sanitize section names
   const sanitizeSection = (section) =>
-    section.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()]/g, "");
+    section.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()=]/g, "");
 
   // Aggregate shortcuts by section
   let sections = {};

@@ -172,7 +172,7 @@ function renderActiveShortcut(
 }
 
 function sanitizePath(path) {
-  return path.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()]/g, "");
+  return path.replace(/[_\/\\\-#\.:, >~*"!$%&^+'@?()=]/g, "");
 }
 
 function createAccordionItem(sanitizedPath) {
