@@ -198,3 +198,7 @@ div.active-shortcuts-accordeon-section {
 .col-12 {
   padding-bottom: 15px;
 }
+
+div#company-id {
+  padding: 0 20px;
+}
