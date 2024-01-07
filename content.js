@@ -192,33 +192,10 @@ function injectScript(file_path, tag) {
 
 async function getLeadIDCompanyID(host, OID) {
   const url = `https://${host}/api/lead/${OID}?lead_type=all-candidates&support_auto_translation=1&no_perm_raise=0&selected=72036861588764&include_ui_filter=-1&order_type=0&filter_data=&with_candidate_summary_data=1&with_integration_message=1`;
-  const requestData = {
-    method: "GET",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
-      Baggage:
-        "sentry-trace_id=ff83d346ab0e46f89c8de070b721063e,sentry-environment=Stg,sentry-release=app%402.3.2,sentry-public_key=4931187b1d434611ac72872a9547f7c4,sentry-transaction=%2Fcandidates%2F.*,sentry-sample_rate=0.05",
-      "Cache-Control": "no-cache",
-      "Content-Type": "application/json",
-      Pragma: "no-cache",
-      "Sec-CH-UA":
-        '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
-      "Sec-CH-UA-Mobile": "?0",
-      "Sec-CH-UA-Platform": '"macOS"',
-      "Sec-Fetch-Dest": "empty",
-      "Sec-Fetch-Mode": "cors",
-      "Sec-Fetch-Site": "same-origin",
-      "Sentry-Trace": "ff83d346ab0e46f89c8de070b721063e-b9ad17b891a526f3-0",
-      "X-CSRFToken":
-        "QUyv4xsjIsOllgFluPqVMfKhr7SFbO96PjlGFg5EBCu9nbFoEqGnnTiRdFjx4f81",
-      "X-Requested-With": "XMLHttpRequest",
-    },
-    referrer: "https://stg.paradox.ai/candidates/all-candidates",
-    referrerPolicy: "same-origin",
-    mode: "cors",
-    credentials: "include",
-  };
+  const requestData = generateRequestData(
+    (CSRFToken =
+      "QUyv4xsjIsOllgFluPqVMfKhr7SFbO96PjlGFg5EBCu9nbFoEqGnnTiRdFjx4f81")
+  );
 
   try {
     const response = await fetch(url, requestData);
@@ -266,28 +243,30 @@ function injectLeadId() {
 
 function injectCompanyIdAndLeadId() {
   if (location?.pathname?.startsWith("/candidates/")) {
-    const OID = location.search.split("selected=")[1].split("&")[0];
+    const OID = location.search.split("selected=")[1]?.split("&")[0];
     const HOST = location.host;
 
     getLeadIDCompanyID(HOST, OID).then((response) => {
-      const innerHTML = `<span><span><b>Company ID: </b>${response.companyId}</span></span>`;
-      const toInject = document.querySelector(`div#company-id`);
-      if (toInject) {
-        toInject.innerHTML = innerHTML;
-      } else {
-        const targetElement = document.querySelector(
-          `div[data-testid="header_lbl_company_name"]`
-        );
-        if (targetElement) {
-          // Create the new element
-          const newElement = document.createElement("div");
-          newElement.id = "company-id";
-          newElement.innerHTML = innerHTML;
-
-          // Insert the new element as the first child of the target
-          targetElement.insertAdjacentElement("beforebegin", newElement);
+      if (response?.companyId) {
+        const innerHTML = `<span><span><b>Company ID: </b>${response.companyId}</span></span>`;
+        const toInject = document.querySelector(`div#company-id`);
+        if (toInject) {
+          toInject.innerHTML = innerHTML;
         } else {
-          console.log("Company Id injection target not found");
+          const targetElement = document.querySelector(
+            `div[data-testid="header_lbl_company_name"]`
+          );
+          if (targetElement) {
+            // Create the new element
+            const newElement = document.createElement("div");
+            newElement.id = "company-id";
+            newElement.innerHTML = innerHTML;
+
+            // Insert the new element as the first child of the target
+            targetElement.insertAdjacentElement("beforebegin", newElement);
+          } else {
+            console.log("Company Id injection target not found");
+          }
         }
       }
     });
@@ -339,19 +318,104 @@ function checkAndObserveTarget() {
   if (leadTarget && companyTarget) clearInterval(checkInterval);
 }
 
+// Function to retrieve cookies from Chrome's cookie store
+function getCookies(domain, callback) {
+  chrome.runtime.sendMessage(
+    { action: "getCookies", url: domain },
+    function (response) {
+      var cookies = response.cookies;
+      if (cookies) callback(cookies);
+    }
+  );
+}
+
+// Function to extract a specific cookie's value
+function getCookieValue(cookies, name) {
+  const cookie = cookies.find((cookie) => cookie.name === name);
+  return cookie ? cookie.value : null;
+}
+
+function generateRequestData(
+  CSRFToken,
+  method = "GET",
+  contentType = "application/json"
+) {
+  return {
+    method,
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
+      Baggage:
+        "sentry-trace_id=ff83d346ab0e46f89c8de070b721063e,sentry-environment=Stg,sentry-release=app%402.3.2,sentry-public_key=4931187b1d434611ac72872a9547f7c4,sentry-transaction=%2Fcandidates%2F.*,sentry-sample_rate=0.05",
+      "Cache-Control": "no-cache",
+      "Content-Type": contentType,
+      Pragma: "no-cache",
+      "Sec-CH-UA":
+        '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
+      "Sec-CH-UA-Mobile": "?0",
+      "Sec-CH-UA-Platform": '"macOS"',
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "Sentry-Trace": "ff83d346ab0e46f89c8de070b721063e-b9ad17b891a526f3-0",
+      "X-CSRFToken": CSRFToken,
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    referrer: "https://stg.paradox.ai/candidates/all-candidates",
+    referrerPolicy: "same-origin",
+    mode: "cors",
+    credentials: "include",
+  };
+}
+
+// Make the authorized request
+function makeAuthorizedRequest(url, cookies, callback) {
+  const CSRFToken = getCookieValue(cookies, "csrftoken"); // Retrieve CSRF token, if used by your application
+  let requestData = generateRequestData(CSRFToken);
+
+  fetch(url, requestData)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      try {
+        console.log(response);
+        callback(response.json());
+      } catch (e) {
+        callback(response);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
 // Initial setup
 injectButton();
 injectShortcutContainer()
   .then(setupContainerVisibilityToggle)
   .catch((error) => console.error("Injection failed:", error));
 
+// Set an interval to check for the target element
+const checkInterval = setInterval(checkAndObserveTarget, 1000); // checks every 1000 milliseconds (1 second)
+
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  console.log("Message received", message);
+
   if (message.action === "updateContainer") {
+    console.log("UpdateContainer message received");
     document.querySelector("div#paradox-plus-shortcut-container").remove();
     jsonStructure = createJsonStructure(message.data);
     assembleAndInjectHTML(jsonStructure).then(setupContainerVisibilityToggle);
+  } else if (message.action === "fetchData") {
+    console.log("fetchData message received");
+    getCookies(message.HOST, function (cookies) {
+      let url = (() =>
+        `${message.HOST}/api/lead/${message.OID}?lead_type=all-candidates&support_auto_translation=1&no_perm_raise=0&selected=${message.OID}&include_ui_filter=-1&order_type=0&time_filter=5&tz_str=US%2FArizona&filter_data=&with_candidate_summary_data=1&with_integration_message=1`)();
+
+      makeAuthorizedRequest(url, cookies);
+      sendResponse({ status: "success" });
+    });
+    return true; // Indicates that the response is sent asynchronously
   }
 });
 
-// Set an interval to check for the target element
-const checkInterval = setInterval(checkAndObserveTarget, 1000); // checks every 1000 milliseconds (1 second)
+console.log("content.js loaded");

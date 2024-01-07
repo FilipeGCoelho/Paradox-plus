@@ -480,4 +480,25 @@ document.addEventListener("DOMContentLoaded", async function () {
   setupSelectFieldListener();
   loadActiveShortcuts();
   setupAddCustomShortcutButton();
+  document.getElementById("someButton").addEventListener("click", function () {
+    // popup.js or content.js
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      let OID = tabs.map((tab) => tab.url)[0]?.split("selected=")?.[1];
+      let HOST = tabs.map((tab) => tab.url)[0]?.split(".ai/")?.[0] + ".ai";
+
+      if (OID && HOST) {
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          { action: "fetchData", OID, HOST },
+          function (response) {
+            if (response?.status === "success") {
+              console.log("Fetch initiated");
+            } else if (!response) {
+              console.log("No response for fetchData");
+            }
+          }
+        );
+      }
+    });
+  });
 });

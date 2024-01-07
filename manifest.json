@@ -2,20 +2,24 @@
   "manifest_version": 3,
   "name": "Paradox Plus",
   "version": "0.0.1",
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html"
   },
-  "description": "A enhancement tool for Paradox's ATS website",
+  "description": "An enhancement tool for Paradox's ATS website",
   "icons": {
     "16": "resources/icon.png",
     "32": "resources/icon.png",
     "48": "resources/icon.png",
     "128": "resources/icon.png"
   },
-  "permissions": ["storage", "webRequest", "activeTab", "scripting"],
+  "permissions": ["storage", "webRequest", "activeTab", "scripting", "cookies"],
+  "host_permissions": ["https://*.paradox.ai/*", "https://*.eu1.paradox.ai/*"],
   "content_scripts": [
     {
-      "matches": ["https://*.paradox.ai/*", "https://www.mchire.com/*"],
+      "matches": ["https://*.paradox.ai/*"],
       "css": ["css/content.css"],
       "js": ["content.js"]
     }
